@@ -1,4 +1,8 @@
-@()
+@import java.util
+@import model.Transaction
+@import play.libs.Json
+
+@(tdTransactions: List[Transaction], zmToken: Optional[String], zmLoginUrl: String)
 
 @main("TD -> ZM") {
 
@@ -15,7 +19,12 @@
             </div>
             <div class="col-sm-6">
                 <p>ZenMoney login</p>
-                <a>Login</a>
+                @if(zmToken.isPresent) {
+                    <span>LOGGED IN</span>
+                }
+                @if(!zmToken.isPresent) {
+                    <a href="@zmLoginUrl">Login</a>
+                }
             </div>
         </div>
 
@@ -45,4 +54,50 @@
         </div>
 
     </div>
+
+
+    <script>
+        $( document ).ready(function() {
+            console.log( "ready!" );
+
+            $('#tdTable').bootstrapTable({
+                data: @Html(Json.toJson(tdTransactions).toString)
+            });
+        });
+
+        $('#submit').click(function (event) {
+            event.preventDefault();
+
+            var file = $('#tdFile').get(0).files[0];
+            var formData = new FormData();
+            formData.append('tdFile', file);
+
+            var tdDiv = $('#td');
+
+            $.ajax({
+                url: '/td/upload',
+                data: formData,
+                type: 'POST',
+                contentType: false,
+                processData: false,
+                beforeSend: function (data) {
+                    // alert('Are you sure you want to upload document?');
+                },
+                success: function (transactions) {
+                    //call your jQuery action here
+                    // tdDiv.text(data);
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    // alert(textStatus + ': ' + errorThrown);
+                }
+            });
+            return false;
+        });
+
+        function fillTd(data) {
+
+        }
+    </script>
+
 }

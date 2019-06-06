@@ -1,5 +1,7 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
 
 /**
@@ -14,7 +16,10 @@ public class Transaction {
 
     private final String amount;
 
-    public Transaction(String date, String shop, String amount) {
+    @JsonCreator
+    public Transaction(@JsonProperty("date") String date,
+                       @JsonProperty("shop") String shop,
+                       @JsonProperty("amount") String amount) {
         this.date = date;
         this.shop = shop;
         this.amount = amount;

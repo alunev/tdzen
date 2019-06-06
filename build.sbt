@@ -21,3 +21,7 @@ libraryDependencies += "org.assertj" % "assertj-core" % "3.8.0"
 
 // https://mvnrepository.com/artifact/org.seleniumhq.selenium/htmlunit-driver
 libraryDependencies += "org.seleniumhq.selenium" % "htmlunit-driver" % "2.35.1"
+
+libraryDependencies ++= Seq(
+  javaWs
+)
