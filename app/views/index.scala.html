@@ -63,6 +63,27 @@
             $('#tdTable').bootstrapTable({
                 data: @Html(Json.toJson(tdTransactions).toString)
             });
+
+            @if(zmToken.isPresent) {
+                $.ajax({
+                    url: 'https://api.zenmoney.ru/s1/transaction/',
+                    type: 'GET',
+                    header: 'Authorization: Bearer @zmToken.get',
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function (data) {
+
+                    },
+                    success: function (zmTransactions) {
+                        $('#zmTable').bootstrapTable({
+                            data: zmTransactions
+                        });
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert(textStatus + ': ' + errorThrown);
+                    }
+                });
+            }
         });
 
         $('#submit').click(function (event) {
